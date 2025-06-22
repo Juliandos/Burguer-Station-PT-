@@ -1,10 +1,10 @@
 "use client"
 import { useMemo } from "react"
-// import { toast } from 'react-toastify'
+import { toast } from 'react-toastify'
 import { useStore } from "@/src/store"
 import ProductDetails from "./ProductDetails"
 import { formatCurrency } from "@/src/utils"
-// import { createOrder } from "@/actions/create-order-action"
+import { createOrder } from "@/actions/create-order-action"
 import { OrderSchema } from "@/src/schema"
 
 export default function OrderSummary() {
@@ -30,15 +30,15 @@ export default function OrderSummary() {
         return
       }
 
-      // const response = await createOrder(data)
-      // if(response?.errors) {
-      //   response.errors.forEach((issue) => {
-      //     console.log(issue);
-      //     // toast.error(issue.message)
-      //   })
-      // }
+      const response = await createOrder(data)
+      if(response?.errors) {
+        response.errors.forEach((issue) => {
+          console.log(issue);
+          // toast.error(issue.message)
+        })
+      }
 
-      // toast.success('Pedido Realizado Correctamente')
+      toast.success('Pedido Realizado Correctamente')
       clearOrder()
   }
 
