@@ -12,12 +12,16 @@
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   },
   "dependencies": {
+    "@cloudinary-util/util": "^4.1.0",
+    "@cloudinary/url-gen": "^1.21.0",
     "@heroicons/react": "^2.2.0",
     "@prisma/client": "^6.10.1",
     "next": "15.3.4",
+    "next-cloudinary": "^6.16.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-toastify": "^11.0.5",
+    "swr": "^2.3.3",
     "zod": "^3.25.67",
     "zustand": "^5.0.5"
   },
