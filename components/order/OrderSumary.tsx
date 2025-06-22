@@ -24,7 +24,6 @@ export default function OrderSummary() {
       if(!result.success) {
         result.error.issues.forEach((issue) => {
           toast.error(issue.message)
-          console.log(issue);
         })
         return
       }
@@ -32,7 +31,6 @@ export default function OrderSummary() {
       const response = await createOrder(data)
       if(response?.errors) {
         response.errors.forEach((issue) => {
-          console.log(issue);
           toast.error(issue.message)
         })
       }
