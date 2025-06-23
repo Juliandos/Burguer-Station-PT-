@@ -20,13 +20,15 @@ export default function ImageUpload({image} : {image: string | undefined}) {
     return (
         <CldUploadWidget
             onSuccess={(result, { widget }) => {
+                console.log(result);
+                
                 if(result.event === 'success') {
                     widget.close()
                     // @ts-ignore
                     setImageUrl(result.info?.secure_url)
                 }
             }}
-            uploadPreset='utgx56zx'
+            uploadPreset='present1'
             options={{
                 maxFiles: 1
             }}
