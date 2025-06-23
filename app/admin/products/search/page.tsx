@@ -4,18 +4,23 @@ import Heading from "@/components/ui/Heading";
 import { prisma } from "@/src/lib/prisma";
 
 async function searchProducts(searchTerm: string) {
+    const searchTermLower = searchTerm.toLowerCase();
+    
     const products = await prisma.product.findMany({
         where: {
             name: {
-                contains: searchTerm,
-                mode: 'insensitive'
+                contains: searchTermLower
             }
         },
         include: {
             category: true
         }
-    })
-    return products
+    });
+    
+    // Filtra adicionalmente para case-insensitive
+    return products.filter(product => 
+        product.name.toLowerCase().includes(searchTermLower)
+    );
 }
 
 export default async function SearchPage({ searchParams }: { searchParams: { search: string } }) {
