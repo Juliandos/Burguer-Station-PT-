@@ -1,4 +1,4 @@
- import { prisma } from "@/src/lib/prisma"
+import { prisma } from "@/src/lib/prisma"
 import ImageUpload from "./ImageUpload"
 import { Product } from "@prisma/client"
 

@@ -2,11 +2,20 @@
 import { getImagePath } from '@/src/utils'
 import { CldUploadWidget } from 'next-cloudinary'
 import Image from 'next/image'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { TbPhotoPlus } from 'react-icons/tb'
 
 export default function ImageUpload({image} : {image: string | undefined}) {
     const [imageUrl, setImageUrl] = useState('')
+    const [isClient, setIsClient] = useState(false)
+
+    // Solo establecer la imagen inicial en el cliente
+    useEffect(() => {
+        setIsClient(true)
+        if (image) {
+            setImageUrl(image)
+        }
+    }, [image])
 
     return (
         <CldUploadWidget
@@ -50,7 +59,8 @@ export default function ImageUpload({image} : {image: string | undefined}) {
                         </div>
                     </div>
 
-                    {image && !imageUrl && (
+                    {/* Solo renderizar en el cliente */}
+                    {isClient && image && !imageUrl && (
                         <div className='space-y-2'>
                             <label>Imagen Actual:</label>
                             <div className='relative w-64 h-64'>
@@ -67,7 +77,7 @@ export default function ImageUpload({image} : {image: string | undefined}) {
                     <input
                         type='hidden'
                         name='image'
-                        defaultValue={imageUrl ? imageUrl : image }
+                        value={imageUrl || image || ''}
                     />
                 </>
             )}
