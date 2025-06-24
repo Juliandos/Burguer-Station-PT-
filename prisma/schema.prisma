@@ -15,37 +15,55 @@ datasource db {
 }
 
 model Category {
-  id  Int   @id   @default(autoincrement())
-  name  String
-  slug  String
-  products  Product[]
+  id      Int      @id @default(autoincrement())
+  name    String
+  slug    String
+  products Product[]
 }
 
 model Product {
-  id  Int   @id   @default(autoincrement())
-  name  String
-  price Float
-  image String
+  id          Int      @id @default(autoincrement())
+  name        String
+  price       Float
+  image       String
   categoryId  Int
-  category  Category @relation(fields: [categoryId], references: [id])
-  orderItems OrderProducts[]
+  category    Category @relation(fields: [categoryId], references: [id])
+  orderItems  OrderProducts[]
 }
 
 model Order {
-  id      Int   @id   @default(autoincrement())
-  name    String
-  total   Float
-  date    DateTime  @default(now())
-  status  Boolean   @default(false)
+  id            Int             @id @default(autoincrement())
+  name          String
+  total         Float
+  date          DateTime        @default(now())
+  status        Boolean         @default(false)
   orderReadyAt  DateTime?
   orderProducts OrderProducts[]
 }
 
 model OrderProducts {
-  id      Int   @id   @default(autoincrement())
-  orderId Int
-  order   Order @relation(fields: [orderId], references: [id])
+  id          Int       @id @default(autoincrement())
+  orderId     Int
+  order       Order     @relation(fields: [orderId], references: [id])
   productId   Int
-  product   Product @relation(fields: [productId], references: [id])
-  quantity  Int
+  product     Product   @relation(fields: [productId], references: [id])
+  quantity    Int
+  adiciones   OrderProductsAdiciones[]
+}
+
+model Adiciones {
+  id      Int       @id @default(autoincrement())
+  nombre  String    @unique
+  precio  Int
+  tipo    String    @unique
+  orderProducts OrderProductsAdiciones[]
+}
+
+model OrderProductsAdiciones {
+  id              Int         @id @default(autoincrement())
+  cantidad        Int
+  orderproducts   OrderProducts @relation(fields: [orderproducts_id], references: [id])
+  orderproducts_id Int
+  adiciones       Adiciones    @relation(fields: [adiciones_id], references: [id])
+  adiciones_id    Int
 }
