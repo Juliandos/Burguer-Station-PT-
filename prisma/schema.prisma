@@ -14,10 +14,20 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id        Int        @id @default(autoincrement())
+  nombre    String?
+  email     String     @unique
+  password  String
+  categories Category[]
+}
+
 model Category {
   id      Int      @id @default(autoincrement())
   name    String
   slug    String
+  userId  Int
+  user    User     @relation(fields: [userId], references: [id])
   products Product[]
 }
 
