@@ -14,23 +14,21 @@ export default function ProductCard({product} : ProductCardProps) {
   
   return (
     <div className="bg-white">
+      <Image
+        width={400}
+        height={500}
+        src={imagePath}
+        alt={`Imagen platillo ${product.name}`}
+      />
 
-        <Image
-            width={400}
-            height={500}
-            src={imagePath}
-            alt={`Imagen platillo ${product.name}`}
-        />
-
-        <div className="p-5">
-            <h3 className="text-2xl font-bold">{product.name}</h3>
-            <p className="mt-5 font-black text-4xl text-amber-500">
-              { formatCurrency( product.price )}
-            </p>
-            <AddProductButton 
-              product={product}
-            />
-        </div>
+      <div className="p-5">
+        <h3 className="text-2xl font-bold">{product.name}</h3>
+        <p className="mt-5 font-black text-4xl text-amber-500">
+          {formatCurrency(product.price)}
+        </p>
+        <p className="mt-5">{product.description}</p>
+        <AddProductButton product={product} />
+      </div>
     </div>
-  )
+  );
 }
