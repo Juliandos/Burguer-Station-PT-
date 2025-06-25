@@ -17,6 +17,7 @@ export async function middleware(request: NextRequest) {
 
   // Redirigir a login si no está autenticado
   if (!verifiedToken && !publicPaths.includes(path)) {
+    console.log('no token')
     const loginUrl = new URL("/auth/login", request.url);
     // Puedes añadir parámetros para redirigir después del login si lo deseas
     // loginUrl.searchParams.set('from', request.nextUrl.pathname);
