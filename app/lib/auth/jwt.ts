@@ -16,8 +16,10 @@ export const verifyToken = (token: string) => {
   }
 };
 
-export const setTokenCookie = (token: string) => {
-  cookies().set("auth_token", token, {
+export const setTokenCookie = async (token: string) => {
+  (await cookies()).set({
+    name: "auth_token",
+    value: token,
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "strict",
@@ -26,10 +28,12 @@ export const setTokenCookie = (token: string) => {
   });
 };
 
-export const getTokenFromCookie = () => {
-  return cookies().get("auth_token")?.value;
+export const getTokenFromCookie = async () => {
+  const cookieStore = await cookies();
+  return cookieStore.get("auth_token")?.value;
 };
 
-export const clearTokenCookie = () => {
-  cookies().delete("auth_token");
+export const clearTokenCookie = async () => {
+  const cookieStore = await cookies();
+  cookieStore.delete("auth_token");
 };
