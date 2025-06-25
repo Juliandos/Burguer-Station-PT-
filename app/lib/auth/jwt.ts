@@ -35,5 +35,6 @@ export const getTokenFromCookie = async () => {
 
 export const clearTokenCookie = async () => {
   const cookieStore = await cookies();
-  cookieStore.delete("auth_token");
+  await cookieStore.delete("auth_token");
 };
+
