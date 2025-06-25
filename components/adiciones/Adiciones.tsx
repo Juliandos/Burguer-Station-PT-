@@ -1,63 +1,107 @@
 'use client'
 
-import { useEffect } from 'react'
-// import { useStore } from "@/src/store"
-// import { prisma } from "@/src/lib/prisma"
+import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
+import { PlusIcon, MinusIcon } from '@heroicons/react/24/outline'
+import { useStore } from '@/src/store'
+
+interface Adicion {
+  id: number
+  nombre: string
+  precio: number
+  tipo: string
+}
 
 export default function Adiciones() {
-    // const [adiciones, setAdiciones] = useState<prisma[]>([])
-    // const [loading, setLoading] = useState(true)
-    // const addAdicionToOrder = useStore((state) => state.addAdicionToOrder)
-    // const order = useStore((state) => state.order)
+  const [adiciones, setAdiciones] = useState<Adicion[]>([])
+  const [cantidades, setCantidades] = useState<Record<number, number>>({})
+  const setAdicion = useStore((state) => state.setAdicion)
 
-    useEffect(() => {
-        const fetchAdiciones = async () => {
-            try {
-                const response = await fetch('/api/adiciones')
-                if (!response.ok) throw new Error('Error al obtener adiciones')
-                const data = await response.json()
-                console.log(data);
-            
-                // setAdiciones(data)
-            } catch (error) {
-                toast.error('Error al cargar adiciones')
-                console.error(error)
-            } finally {
-                // setLoading(false)
-            }
-        }
+  useEffect(() => {
+    const fetchAdiciones = async () => {
+      try {
+        const res = await fetch('/api/adiciones')
+        if (!res.ok) throw new Error('Error al obtener adiciones')
+        const data = await res.json()
+        setAdiciones(data)
 
-        fetchAdiciones()
-    }, [])
+        // Inicializa cantidades en 0
+        const iniciales: Record<number, number> = {}
+        data.forEach((item: Adicion) => (iniciales[item.id] = 0))
+        setCantidades(iniciales)
+      } catch (error) {
+        toast.error('Error al cargar adiciones')
+        console.error(error)
+      }
+    }
 
-    // const handleAddAdicion = (adicion: Adicion) => {
-    //     // Verifica si el producto actual tiene adiciones
-    //     if (order.length === 0) {
-    //         toast.warn('Primero agrega un producto al pedido')
-    //         return
-    //     }
-        
-    //     addAdicionToOrder(adicion)
-    //     toast.success(`${adicion.nombre} agregada al pedido`)
-    // }
+    fetchAdiciones()
+  }, [])
 
-    // if (loading) return <p>Cargando adiciones...</p>
+  const increase = (id: number) => {
+    if (cantidades[id] < 3) {
+      const nuevaCantidad = cantidades[id] + 1
+      setCantidades((prev) => ({ ...prev, [id]: nuevaCantidad }))
+      const precio = adiciones.find((a) => a.id === id)?.precio || 0
+      setAdicion(id, precio, nuevaCantidad)
+    } else {
+      toast.warn('Máximo 3 unidades permitidas')
+    }
+  }
 
-    return (
-        <div className="mt-5 border-t border-gray-200 pt-5">
-            <h2 className="text-xl font-bold mb-3">Adiciones</h2>
-            <div className="grid grid-cols-2 gap-2">
-                {/* {adiciones.map((adicion) => (
-                    <button
-                        key={adicion.id}
-                        onClick={() => handleAddAdicion(adicion)}
-                        className="bg-white border border-gray-200 p-2 text-sm rounded hover:bg-gray-100 transition-colors"
-                    >
-                        {adicion.nombre} (+{adicion.precio})
-                    </button>
-                ))} */}Holaaa
+  const decrease = (id: number) => {
+    const nuevaCantidad = cantidades[id] > 0 ? cantidades[id] - 1 : 0
+    setCantidades((prev) => ({ ...prev, [id]: nuevaCantidad }))
+    const precio = adiciones.find((a) => a.id === id)?.precio || 0
+    setAdicion(id, precio, nuevaCantidad)
+  }
+
+  const formatCurrency = (value: number) =>
+    new Intl.NumberFormat('es-CO', {
+      style: 'currency',
+      currency: 'COP',
+      minimumFractionDigits: 0,
+    }).format(value)
+
+  return (
+    <div className="mt-5 border-t border-gray-200 pt-5">
+      <h2 className="text-xl font-bold mb-3">Adiciones</h2>
+
+      <ul className="space-y-4">
+        {adiciones.map((item) => (
+          <li
+            key={item.id}
+            className="flex flex-col md:flex-row justify-between items-start md:items-center bg-white shadow px-4 py-3 border border-gray-200 rounded"
+          >
+            <div className="flex flex-col md:flex-row md:items-center md:gap-4 mb-2 md:mb-0">
+            <p className="font-semibold">{item.nombre}</p>
+            <p className="text-amber-500 font-bold">{formatCurrency(item.precio)}</p>
+          </div>
+
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={() => decrease(item.id)}
+                disabled={cantidades[item.id] === 0}
+                className="disabled:opacity-30 p-2 rounded bg-gray-100 hover:bg-gray-200"
+              >
+                <MinusIcon className="h-5 w-5" />
+              </button>
+
+              <span className="w-6 text-center font-bold">{cantidades[item.id]}</span>
+
+              <button
+                type="button"
+                onClick={() => increase(item.id)}
+                disabled={cantidades[item.id] >= 3}
+                className="disabled:opacity-30 p-2 rounded bg-gray-100 hover:bg-gray-200"
+              >
+                <PlusIcon className="h-5 w-5" />
+              </button>
             </div>
-        </div>
-    )
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
 }
