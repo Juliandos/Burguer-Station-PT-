@@ -11,7 +11,8 @@ export const OrderSchema = z.object({
         price: z.number(),
         quantity: z.number(),
         subtotal: z.number()
-    }))
+    })),
+    adiciones: z.any()
 })
 
 export const OrderIdSchema = z.object({

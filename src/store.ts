@@ -4,8 +4,8 @@ import { Product } from "@prisma/client";
 
 interface Store {
   order: OrderItem[];
-  adiciones: { [id: number]: { precio: number; cantidad: number } };
-  setAdicion: (id: number, precio: number, cantidad: number) => void;
+  adiciones: { [id: number]: { precio: number; cantidad: number; id: number } };
+  setAdicion: (id: number, precio: number, cantidad: number, adciones: object, cantidades: object) => void;
   clearAdiciones: () => void;
   addToOrder: (product: Product) => void;
   increaseQuantity: (id: Product["id"]) => void;
@@ -17,11 +17,13 @@ interface Store {
 export const useStore = create<Store>((set, get) => ({
   order: [],
   adiciones: {},
-  setAdicion: (id, precio, cantidad) => {
+  setAdicion: (id, precio, cantidad, adiciones, cantidades) => {
+    console.log("Adiciones actuales:", adiciones);
+    console.log("Cantidades actuales:", cantidades);
     set((state) => ({
       adiciones: {
         ...state.adiciones,
-        [id]: { precio, cantidad },
+        [id]: { precio, cantidad, id },
       },
     }));
   },

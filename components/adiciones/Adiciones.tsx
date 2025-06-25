@@ -23,27 +23,29 @@ export default function Adiciones() {
         const res = await fetch('/api/adiciones')
         if (!res.ok) throw new Error('Error al obtener adiciones')
         const data = await res.json()
+        console.log('Adiciones.tsx > data:', data)
         setAdiciones(data)
 
         // Inicializa cantidades en 0
         const iniciales: Record<number, number> = {}
         data.forEach((item: Adicion) => (iniciales[item.id] = 0))
+        
         setCantidades(iniciales)
       } catch (error) {
         toast.error('Error al cargar adiciones')
         console.error(error)
       }
     }
-
+    
     fetchAdiciones()
   }, [])
-
+  
   const increase = (id: number) => {
     if (cantidades[id] < 3) {
       const nuevaCantidad = cantidades[id] + 1
       setCantidades((prev) => ({ ...prev, [id]: nuevaCantidad }))
       const precio = adiciones.find((a) => a.id === id)?.precio || 0
-      setAdicion(id, precio, nuevaCantidad)
+      setAdicion(id, precio, nuevaCantidad, adiciones[id], cantidades)
     } else {
       toast.warn('Máximo 3 unidades permitidas')
     }

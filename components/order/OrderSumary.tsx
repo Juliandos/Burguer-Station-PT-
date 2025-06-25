@@ -23,8 +23,11 @@ export default function OrderSummary() {
     const data = {
       name: formData.get('name'),
       total,
-      order
+      order,
+      adiciones
     }
+    
+    console.log("data:", data);
 
     const result = OrderSchema.safeParse(data)
     if (!result.success) {
@@ -33,7 +36,8 @@ export default function OrderSummary() {
       })
       return
     }
-
+    console.log(data);
+    
     const response = await createOrder(data)
     if (response?.errors) {
       response.errors.forEach((issue) => {

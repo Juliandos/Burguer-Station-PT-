@@ -12,6 +12,8 @@ export default function OrdersPage() {
     revalidateOnFocus: false,
 
   })
+  
+  console.log('f/e data:', data)
 
   if(isLoading) return <p>Cargando...</p>
   
