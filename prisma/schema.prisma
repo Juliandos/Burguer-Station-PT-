@@ -36,6 +36,7 @@ model Product {
   name        String
   price       Float
   image       String
+  description String @default("Sin descripción")
   categoryId  Int
   category    Category @relation(fields: [categoryId], references: [id])
   orderItems  OrderProducts[]
@@ -48,6 +49,7 @@ model Order {
   date          DateTime        @default(now())
   status        Boolean         @default(false)
   orderReadyAt  DateTime?
+  
   orderProducts OrderProducts[]
 }
 
