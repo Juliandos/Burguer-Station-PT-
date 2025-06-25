@@ -34,7 +34,7 @@ export default function LoginForm() {
                 throw new Error(data.error || 'Login failed');
             }
 
-            router.push('/admin/orders');
+            router.push('/order/hamburgesa');
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Login failed');
         } finally {

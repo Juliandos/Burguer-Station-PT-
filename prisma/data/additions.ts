@@ -1,32 +1,32 @@
 export const additions = [
   {
     nombre: "Huevo frito",
-    precio: 100, // $1.00 USD (en centavos)
+    precio: 5, // $1.00 USD (en centavos)
     tipo: "personalizacion"
   },
   {
     nombre: "Jalapeños",
-    precio: 50, // $0.50 USD
+    precio: 5, // $0.50 USD
     tipo: "personalizacion"
   },
   {
     nombre: "Guacamole",
-    precio: 150, // $1.50 USD
+    precio: 5, // $1.50 USD
     tipo: "personalizacion"
   },
   {
     nombre: "Piña caramelizada",
-    precio: 75, // $0.75 USD
+    precio: 5, // $0.75 USD
     tipo: "personalizacion"
   },
   {
     nombre: "Extra queso (cheddar)",
-    precio: 80, // $0.80 USD
+    precio: 8, // $0.80 USD
     tipo: "personalizacion"
   },
   {
     nombre: "Extra queso (mozzarella)",
-    precio: 80, // $0.80 USD
+    precio: 8, // $0.80 USD
     tipo: "personalizacion"
   },
   {
@@ -51,7 +51,7 @@ export const additions = [
   },
   {
     nombre: "Mayonesa picante",
-    precio: 60, // $0.60 USD
+    precio: 6, // $0.60 USD
     tipo: "salsa"
   }
 ];

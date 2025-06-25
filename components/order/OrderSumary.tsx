@@ -7,6 +7,7 @@ import { formatCurrency } from "@/src/utils"
 import { createOrder } from "@/actions/create-order-action"
 import { OrderSchema } from "@/src/schema"
 import Adiciones from "../adiciones/Adiciones"
+import { useRouter } from 'next/navigation';
 
 export default function OrderSummary() {
   const order = useStore((state) => state.order)
@@ -16,8 +17,9 @@ export default function OrderSummary() {
   const productos = order.reduce((total, item) => total + (item.quantity * item.price), 0)
   const extras = Object.values(adiciones).reduce((total, a) => total + (a.precio * a.cantidad), 0)
   return productos + extras
-}, [order, adiciones])
+  }, [order, adiciones])
 
+  const router = useRouter();
 
   const handleCreateOrder = async (formData: FormData) => {
     const data = {
@@ -47,6 +49,7 @@ export default function OrderSummary() {
 
     toast.success('Pedido Realizado Correctamente')
     clearOrder()
+    router.push('/admin/orders');
   }
 
   return (
