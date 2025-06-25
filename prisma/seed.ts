@@ -1,58 +1,46 @@
-import { categories } from "./data/categories";
-import { products } from "./data/products";
-import { additions } from "./data/additions"; // Importa las adiciones
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
+import { categories } from "./data/categories";
+import { products } from "./data/products";
+import { additions } from "./data/additions";
 
 const prisma = new PrismaClient();
 
 async function main() {
   try {
-    // Crear usuario admin con contraseña hasheada
-    const hashedPassword = await bcrypt.hash("password123", 10);
-    const user = await prisma.user.create({
-      data: {
-        nombre: "Admin",
-        email: "admin@example.com",
+    const hashedPassword = await bcrypt.hash("123456", 10);
+
+    const user = await prisma.user.upsert({
+      where: { email: "julian@gmail.com" },
+      update: {},
+      create: {
+        nombre: "julian",
+        email: "julian@gmail.com",
         password: hashedPassword,
       },
     });
 
-    // Crear categorías
-    const categoriesWithUserId = categories.map((category) => ({
-      ...category,
-      userId: user.id,
-    }));
-
+    // Insertar categorías con userId asignado
     await prisma.category.createMany({
-      data: categoriesWithUserId,
+      data: categories.map((cat) => ({
+        ...cat,
+        userId: user.id,
+      })),
     });
 
-    // Crear productos
-    await prisma.product.createMany({
-      data: products,
-    });
+    await prisma.product.createMany({ data: products });
 
-    // Crear adiciones
-    await prisma.adiciones.createMany({
-      data: additions,
-    });
+    await prisma.adiciones.createMany({ data: additions });
 
-    console.log("✅ Seed completado con éxito!");
-    console.log(`👤 Usuario creado: admin@example.com / password123`);
-    console.log(`🛒 ${products.length} productos creados`);
-    console.log(`➕ ${additions.length} adiciones creadas`);
+    console.log("✅ Seed completado con éxito");
+    console.log(`👤 Usuario: ${user.email}`);
+    console.log(`📦 ${products.length} productos`);
+    console.log(`➕ ${additions.length} adiciones`);
   } catch (error) {
-    console.error("❌ Error en el seed:", error);
+    console.error("❌ Error en seed:", error);
+  } finally {
+    await prisma.$disconnect();
   }
 }
 
-main()
-  .then(async () => {
-    await prisma.$disconnect();
-  })
-  .catch(async (e) => {
-    console.error(e);
-    await prisma.$disconnect();
-    process.exit(1);
-  });
+main();

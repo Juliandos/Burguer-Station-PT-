@@ -6,6 +6,7 @@ import ProductDetails from "./ProductDetails"
 import { formatCurrency } from "@/src/utils"
 import { createOrder } from "@/actions/create-order-action"
 import { OrderSchema } from "@/src/schema"
+import Adiciones from "../adiciones/Adiciones"
 
 export default function OrderSummary() {
   const order = useStore((state) => state.order)
@@ -51,6 +52,8 @@ export default function OrderSummary() {
                       item={item}
                   />
               ))}
+
+              <Adiciones />
 
               <p className="text-2xl mt-20 text-center">
                 Total a pagar: {''}

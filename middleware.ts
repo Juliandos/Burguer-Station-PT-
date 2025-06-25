@@ -6,7 +6,7 @@ export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
 
   // Rutas públicas
-  const publicPaths = ["/auth/login", "/auth/register", '/logout'];
+  const publicPaths = ["/auth/login", "/auth/register", "/logout"];
   if (publicPaths.includes(path)) {
     return NextResponse.next();
   }

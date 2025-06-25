@@ -67,7 +67,7 @@ model Adiciones {
   id      Int       @id @default(autoincrement())
   nombre  String    @unique
   precio  Int
-  tipo    String    @unique
+  tipo    String
   orderProducts OrderProductsAdiciones[]
 }
 
