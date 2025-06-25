@@ -31,7 +31,7 @@ export async function POST(request: Request) {
                 { status: 201 }
             );
 
-            setTokenCookie(token);
+            await setTokenCookie(token);
             return response;
         } else if (action === 'login') {
             // Validación de login
@@ -65,7 +65,7 @@ export async function POST(request: Request) {
                 { status: 200 }
             );
 
-            setTokenCookie(token);
+            await setTokenCookie(token);
             return response;
         } else {
             return NextResponse.json(

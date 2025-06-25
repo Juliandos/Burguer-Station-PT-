@@ -14,6 +14,9 @@ export async function middleware(request: NextRequest) {
   // Verificar token para rutas protegidas
   const token = request.cookies.get("auth_token")?.value;
   const verifiedToken = token && verifyToken(token);
+  console.log('token: ', token)
+  console.log('verifiedToken: ', verifiedToken)
+  console.log('Antes de verificar el token')
 
   // Redirigir a login si no está autenticado
   if (!verifiedToken && !publicPaths.includes(path)) {
