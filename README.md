@@ -6,7 +6,7 @@ Burger Station es una aplicación web desarrollada con **Next.js** que permite g
 🎥 0. Video
 
 Para ver la demostración en video del proyecto, accede al siguiente enlace:  
-[Ver video demostrativo]([https://tu-enlace.com/video-demo](https://drive.google.com/file/d/1p70vhjDxHxj6AfiVATnrP0gR8GHTi5XF/view?usp=drive_link)) 
+[Ver video demostrativo](https://drive.google.com/file/d/1p70vhjDxHxj6AfiVATnrP0gR8GHTi5XF/view?usp=drive_link)) 
 ---
 
 ## 📌 1. Introducción
