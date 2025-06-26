@@ -1,7 +1,12 @@
 # 🍔 Burger Station – App de Ventas de Comida Rápida
 
 Burger Station es una aplicación web desarrollada con **Next.js** que permite gestionar pedidos de comida rápida de forma eficiente, moderna y adaptable a diferentes dispositivos. Incluye administración de productos, categorías, clientes y pedidos, así como la relación de productos con complementos (adiciones).
+---
 
+🎥 0. Video
+
+Para ver la demostración en video del proyecto, accede al siguiente enlace:  
+[Ver video demostrativo]([https://tu-enlace.com/video-demo](https://drive.google.com/file/d/1p70vhjDxHxj6AfiVATnrP0gR8GHTi5XF/view?usp=drive_link)) 
 ---
 
 ## 📌 1. Introducción
