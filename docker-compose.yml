@@ -1,0 +1,80 @@
+version: '3.8'
+
+services:
+  # Base de datos MySQL (solo uso interno)
+  mysql:
+    image: mysql:8.0
+    container_name: burger-station-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootpassword}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-burger_station}
+      MYSQL_USER: ${MYSQL_USER:-burger_user}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-burger_password}
+    expose:
+      - "3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./script-bd.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+      - ./docker/mysql/conf.d:/etc/mysql/conf.d:ro
+    networks:
+      - burger-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  # Aplicación NextJS
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: burger-station-app
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=mysql://${MYSQL_USER:-burger_user}:${MYSQL_PASSWORD:-burger_password}@mysql:3306/${MYSQL_DATABASE:-burger_station}
+      - NEXTAUTH_SECRET=${NEXTAUTH_SECRET:-your-secret-key-here}
+      - NEXTAUTH_URL=${NEXTAUTH_URL:-https://localhost}
+    expose:
+      - "3000"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - burger-network
+    volumes:
+      - ./public/uploads:/app/public/uploads
+      - ./logs:/app/logs
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Nginx como proxy reverso
+  nginx:
+    image: nginx:alpine
+    container_name: burger-station-nginx
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+      - "4433:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+      - ./public/uploads:/var/www/uploads:ro
+    networks:
+      - burger-network
+    depends_on:
+      app:
+        condition: service_healthy
+
+volumes:
+  mysql_data:
+    driver: local
+
+networks:
+  burger-network:
+    driver: bridge
