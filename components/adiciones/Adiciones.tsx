@@ -55,7 +55,7 @@ export default function Adiciones() {
     const nuevaCantidad = cantidades[id] > 0 ? cantidades[id] - 1 : 0
     setCantidades((prev) => ({ ...prev, [id]: nuevaCantidad }))
     const precio = adiciones.find((a) => a.id === id)?.precio || 0
-    setAdicion(id, precio, nuevaCantidad)
+    setAdicion(id, precio, nuevaCantidad, adiciones, cantidades) // ✅ Agrega los dos parámetros faltantes
   }
 
   const formatCurrency = (value: number) =>
